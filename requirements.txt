@@ -48,7 +48,6 @@ opencv-python-headless==4.10.0.84
 openpyxl==3.1.5
 packaging==24.2
 pandas==2.2.3
-pathlib==1.0.1
 pefile==2023.2.7
 pillow==11.0.0
 pix2tex==0.1.2
