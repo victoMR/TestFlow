@@ -46,6 +46,13 @@ FormulaExtractor es una aplicación de escritorio innovadora diseñada para revo
 - **RAM**: Mínimo 4GB (Recomendado 8GB)
 - **Espacio en Disco**: 500MB mínimo
 
+### O puedes descargar la carpeta del ejecutable
+- [Descargar](https://drive.google.com/file/d/1xRQhoXzrK8PO2tH1RmL1h2CZBExT9IOW/view?usp=sharing)
+- Descomprimir el archivo
+- Ejecutar el archivo `FormulaExtractor.exe`
+- Ingresar credenciales
+- ¡Listo para usar!
+
 ### Guía de Instalación Rápida
 
 1. **Clonar Repositorio**:
