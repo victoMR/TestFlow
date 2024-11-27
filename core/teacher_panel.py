@@ -3,6 +3,9 @@ from typing import Dict, List, Tuple, Optional
 from tkinter import messagebox, filedialog
 from PIL import Image, ImageTk, ImageGrab
 from datetime import datetime
+
+from dns.e164 import query
+
 from core.exporters import FormulaExporter
 from core.stats import FormulaStats
 from core.config import UI_CONFIG, APP_CONFIG
@@ -418,7 +421,9 @@ class TeacherPanel:
                     "type": formula["type"],
                     "difficulty": formula["difficulty"],
                     "user_id": str(self.user_data["_id"]),
-                    "timestamp": datetime.now()
+                    "timestamp": datetime.now(),
+                    # Añaidr campo para guardar el resultado de la fórmula
+                    "result": formula["result"],
                 }
                 self.formulas.insert_one(formula_doc)
             
@@ -683,6 +688,16 @@ class TeacherPanel:
                 corner_radius=5,
                 padx=10
             )
+            # Para poner el resultado de la fórmula
+            ctk.CTkLabel(
+                meta_frame,
+                text=formula.get('result', 'No definido'),
+                font=("Roboto", 12),
+                fg_color=difficulty_colors.get(formula.get('difficulty', ''), "#757575"),
+                corner_radius=5,
+                padx=10
+            ).pack(side="left", padx=5)
+
             diff_label.pack(side="left", padx=5)
             
             # Fecha - Manejo mejorado
@@ -835,7 +850,49 @@ class TeacherPanel:
             )
             diff_menu.set(formula.get('difficulty', 'Medio'))
             diff_menu.pack(fill="x", pady=5)
-            
+
+            # Crear la etiqueta para el resultado
+            ctk.CTkLabel(
+                diff_frame,
+                text="Resultado:",
+                font=("Roboto", 12)
+            ).pack(anchor="w", pady=5)
+
+            # Crear el textbox para el resultado
+            result_texbox = ctk.CTkEntry(
+                diff_frame,
+                height=40,
+                font=("Roboto", 14)
+            )
+            result_texbox.pack(fill="x", pady=5)  # Asegurarse de empaquetar correctamente
+
+            # Función para guardar o actualizar el resultado
+            def save_result():
+                new_result = result_texbox.get()  # Obtener el nuevo resultado
+                if 'result' not in formula:  # Si no existe el campo 'result'
+                    formula['result'] = new_result  # Crear el campo y asignar el nuevo valor
+                else:
+                    formula['result'] = new_result  # Actualizar el valor existente
+
+                # Actualizar la fórmula en la base de datos
+                self.formulas.update_one(
+                    {"_id": formula["_id"]},
+                    {
+                        "$set": {
+                            "result": formula['result']
+                        }
+                    }
+                )
+                print(f"Resultado actualizado a: {formula['result']}")
+
+            # Crear el botón para guardar el resultado
+            save_button = ctk.CTkButton(
+                diff_frame,
+                text="Guardar Resultado",
+                command=save_result
+            )
+            save_button.pack(pady=10)
+
             # Botones de acción
             buttons_frame = ctk.CTkFrame(main_frame, fg_color="transparent")
             buttons_frame.pack(fill="x", pady=20)
