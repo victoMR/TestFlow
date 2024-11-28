@@ -237,6 +237,25 @@ class FormulaViewer:
         )
         diff_menu.set(formula.get("difficulty", "Medio"))
         diff_menu.pack(side="left", padx=2)
+
+        # Poner el resultado de la formula con un txtBox
+        result_label = ctk.CTkLabel(
+            preview_frame,
+            text="Resultado:",
+            font=("Roboto", 12, "bold")
+        )
+
+        result_label.pack(anchor="w", padx=5, pady=(10,0))
+
+        result_text = ctk.CTkTextbox(
+            preview_frame,
+            height=40,
+            font=("Courier", 12),
+            fg_color="#404040"
+        )
+
+        result_text.pack(fill="x", padx=5, pady=2)
+
         
         # Botones de acción
         actions_frame = ctk.CTkFrame(edit_frame, fg_color="transparent")
@@ -268,6 +287,7 @@ class FormulaViewer:
         formula["entry"] = latex_entry
         formula["type_menu"] = type_menu
         formula["diff_menu"] = diff_menu
+        formula["result_text"] = result_text
         
         return card
 
@@ -596,6 +616,7 @@ class FormulaViewer:
             formula["latex"] = formula["entry"].get()
             formula["type"] = formula["type_menu"].get()
             formula["difficulty"] = formula["diff_menu"].get()
+            formula["result"] = formula["result_text"].get("1.0", "end-1c") # Obtiene el texto del txtBox el 1.0 es la fila 1 columna 0 y end-1c es el final menos el salto de linea
         
         if callback:
             callback(formulas)

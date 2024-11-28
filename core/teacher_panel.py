@@ -884,14 +884,7 @@ class TeacherPanel:
                     }
                 )
                 print(f"Resultado actualizado a: {formula['result']}")
-
-            # Crear el botón para guardar el resultado
-            save_button = ctk.CTkButton(
-                diff_frame,
-                text="Guardar Resultado",
-                command=save_result
-            )
-            save_button.pack(pady=10)
+                messagebox.showinfo("Éxito", "Resultado actualizado correctamente")
 
             # Botones de acción
             buttons_frame = ctk.CTkFrame(main_frame, fg_color="transparent")
@@ -929,7 +922,8 @@ class TeacherPanel:
                                 "latex": latex_entry.get(),
                                 "type": type_menu.get(),
                                 "difficulty": diff_menu.get(),
-                                "last_modified": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                "last_modified": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                "result": result_texbox.get()
                             }
                         }
                     )
